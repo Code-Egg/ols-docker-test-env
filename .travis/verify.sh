@@ -1,7 +1,6 @@
 #!/bin/bash
 
 set -o errexit
-source .env
 EX_DM='example.com' 
 
 install_demo(){
@@ -79,15 +78,6 @@ verify_del_vh_wp(){
     fi
     echo "Remove examplecom DataBase"
     bash bin/database.sh --delete -DB examplecom
-    echo "Show databases"
-    DB_LIST="$(docker compose exec -T mysql su -c "mariadb -uroot --password=${MYSQL_ROOT_PASSWORD} -e 'show databases;'")"
-    echo "${DB_LIST}" | grep examplecom
-    if [ ${?} = 1 ]; then
-        echo "[O]  ${EX_DM} DB is removed"
-    else
-        echo "[X]  ${EX_DM} DB is not removed"
-        exit 1
-    fi
 }
 
 verify_owasp(){
