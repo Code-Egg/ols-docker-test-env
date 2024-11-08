@@ -77,8 +77,10 @@ verify_del_vh_wp(){
         echo "[X]  ${EX_DM} VH is not removed"
         exit 1
     fi
+    echo "Remove examplecom DataBase"
     bash bin/database.sh --delete -DB examplecom
-    docker compose exec -T mysql su -c "mariadb -uroot --password=${MYSQL_ROOT_PASSWORD} -e 'show databases;'" | grep example
+    echo "Show databases"
+    docker compose exec -T mysql su -c "mariadb -uroot --password=${MYSQL_ROOT_PASSWORD} -e 'show databases;'"
     if [ ${?} = 1 ]; then
         echo "[O]  ${EX_DM} DB is removed"
     else
