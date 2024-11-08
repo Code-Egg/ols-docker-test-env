@@ -70,7 +70,7 @@ verify_add_vh_wp(){
 }
 verify_del_vh_wp(){
     echo "Remove ${EX_DM} domain"
-    bash bin/domain.sh --del example.com
+    bash bin/domain.sh --del ${EX_DM}
     if [ ${?} = 0 ]; then
         echo "[O]  ${EX_DM} VH is removed"
     else
@@ -80,7 +80,8 @@ verify_del_vh_wp(){
     echo "Remove examplecom DataBase"
     bash bin/database.sh --delete -DB examplecom
     echo "Show databases"
-    docker compose exec -T mysql su -c "mariadb -uroot --password=${MYSQL_ROOT_PASSWORD} -e 'show databases;'"
+    DB_LIST="$(docker compose exec -T mysql su -c "mariadb -uroot --password=${MYSQL_ROOT_PASSWORD} -e 'show databases;'")"
+    echo "${DB_LIST}" | grep examplecom
     if [ ${?} = 1 ]; then
         echo "[O]  ${EX_DM} DB is removed"
     else
