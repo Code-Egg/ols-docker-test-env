@@ -78,8 +78,9 @@ verify_vh_wp_setup(){
 }
 
 verify_owasp(){
-    echo 'Update LSWS'
-    bash bin/webadmin.sh --upgrade
+    echo 'Updating LSWS'
+    bash bin/webadmin.sh --upgrade 2>&1 /dev/null
+    echo 'Enabling OWASP'
     bash bin/webadmin.sh --mod-secure enable
     curl -sIk http://localhost:80/phpinfo.php | awk '/HTTP/ && /403/'
     if [ ${?} = 0 ]; then
