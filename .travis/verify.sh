@@ -1,7 +1,7 @@
 #!/bin/bash
 
 set -o errexit
-
+source .env
 EX_DM='example.com' 
 
 install_demo(){
@@ -67,12 +67,22 @@ verify_vh_wp_setup(){
         curl -sIk http://${EX_DM}:80/
         exit 1
     fi
+}
+verify_vh_wp_setup(){
+    echo "Remove ${EX_DM} domain"
     bash bin/domain.sh --del example.com
-    grep "${EX_DM}" lsws/conf/httpd_config.conf
-    if [ ${?} = 1 ]; then
+    if [ ${?} = 0 ]; then
         echo "[O]  ${EX_DM} VH is removed"
     else
         echo "[X]  ${EX_DM} VH is not removed"
+        exit 1
+    fi
+    bash bin/database.sh --delete -DB examplecom
+    docker compose exec -T mysql su -c "mariadb -uroot --password=${MYSQL_ROOT_PASSWORD} -e 'show databases;'" | grep example
+    if [ ${?} = 1 ]; then
+        echo "[O]  ${EX_DM} DB is removed"
+    else
+        echo "[X]  ${EX_DM} DB is not removed"
         exit 1
     fi
 }
