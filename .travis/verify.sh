@@ -54,7 +54,7 @@ verify_phpadmin(){
     fi      
 }
 
-verify_vh_wp_setup(){
+verify_add_vh_wp(){
     echo "Setup a WordPress site with ${EX_DM} domain"
     bash bin/domain.sh --add "${EX_DM}"
     bash bin/database.sh --domain "${EX_DM}"
@@ -68,7 +68,7 @@ verify_vh_wp_setup(){
         exit 1
     fi
 }
-verify_vh_wp_setup(){
+verify_del_vh_wp(){
     echo "Remove ${EX_DM} domain"
     bash bin/domain.sh --del example.com
     if [ ${?} = 0 ]; then
@@ -118,6 +118,7 @@ main(){
     install_demo
     verify_page
     verify_owasp
-    verify_vh_wp_setup
+    verify_add_vh_wp
+    verify_del_vh_wp
 }
 main
