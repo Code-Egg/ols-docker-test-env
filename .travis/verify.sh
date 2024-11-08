@@ -2,7 +2,7 @@
 
 set -o errexit
 
-EX_DM='example.com'
+EX_DM='example.com' 
 
 install_demo(){
     ./bin/demosite.sh
